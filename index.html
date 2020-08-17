@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shopping Cart By Nayan</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+ 
+<style>
+
+body{
+	background: #fff;
+}
+.cart{
+	margin: 100px 0;
+	background-color: #F6F5FA;;
+	padding: 60px 0;
+}
+.total-price{
+	padding-bottom: 15px;
+}
+.cart-item{
+	background-color: #fff;
+	border-radius: 10px;
+	padding: 15px 20px;
+	margin-bottom: 20px;
+}
+.center-item{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.cart-item img{
+	width: 115px;
+}
+.cart-item h5{
+    padding: 0 45px;
+}
+.cart-item .remove-item{
+	width: 25px!important;
+}
+.btn-default{
+	background-color: #fff;
+}
+.cart-item .form-control{
+	background-color: #F6F5FA;
+	border: none;
+    width: 65px;
+    border-radius: 10px!important;
+    font-weight: 700;
+    font-size: 20px;
+}
+.input-group{
+	width: unset;
+}
+.status{
+	text-align: right;
+}
+.check-out{
+    float: right;
+    padding: 10px 30px;
+	font-size: 19px;
+	background-color: #2FBE70;
+	border: none;
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+    <section>
+        <div class="container">
+            <div class="cart">
+                <div class="col-md-12 col-lg-10 mx-auto">
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item">
+                                <img src="images/product-1.png" alt="">
+                                <h5>iPhone 11 128GB Black</h5>
+                            </div>
+
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button onclick="handleQuantity('phone', false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                                    <input id="phone-count" type="text" class="form-control text-center" value="1">
+                                    <button onclick="handleQuantity('phone', true)" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <h5 id="phone-total">$1219</h5>
+                                <img src="images/remove.png" alt="" class="remove-item">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item mx-auto">
+                                <img src="images/product-2.png" alt="">
+                                <h5>iPhone 11 Silicone Case - Black</h5>
+                            </div>
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button onclick="handleQuantity('case', false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                                    <input id="case-count" type="text" class="form-control text-center" value="1">
+                                    <button onclick="handleQuantity('case', true)" class="btn btn-default"><i class="fas fa-plus"></i></button>
+
+                                </div>
+                                <h5 id="case-total">$59</h5>
+                                <img src="images/remove.png" alt="" class="remove-item">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row">
+
+                            <div class="col-md-8">
+                                <h5>Subtotal: </h5>
+                                <h5>Tax:</h5>
+                                <h5>Total:</h5>
+                            </div>
+
+                            <div class="col-md-4 status">
+                                <h5 id="temp-total">$1,278</h5>
+                                <h5 id="tax-counter">$0</h5>
+                                <h5 id="g-total">$1,278</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pt-4 pb-4">
+                        <button type="button" class="btn btn-success check-out">Check Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+
+<script>
+
+
+function handleQuantity(device, increment) {                     
+
+    const Count = getInputValue(device);                        
+    let NewCount = Count;                                 
+    if (increment == true) {                                           
+        NewCount = Count + 1;                            
+    }
+    if (increment == false && Count > 0) {                      
+        NewCount = Count - 1;                             
+    }
+    document.getElementById(device + '-count').value = NewCount; 
+    let deviceTotal = 0;                                                
+    if (device == 'phone') {                                            
+        deviceTotal = NewCount * 1219;                            
+    }
+    if (device == 'case') {                                             
+        deviceTotal = NewCount * 59;                            
+    }
+
+    document.getElementById(device + '-total').innerText = '$' + deviceTotal; 
+    updateTotal();                                                          
+}
+
+function getInputValue(device) {                                          
+    console.log(device);                                                  
+    const deviceInput = document.getElementById(device + '-count');      
+    const deviceCount = parseInt(deviceInput.value);                     
+    return deviceCount;                                                   
+}
+
+function updateTotal() {                                                  
+    const countedPhonePiece = getInputValue('phone');                               
+    const countedCasePiece = getInputValue('case');                                
+
+    const total = countedPhonePiece * 1219 + countedCasePiece  * 59;                   
+    document.getElementById('temp-total').innerText = '$' + total;     
+    const tax = Math.round(total * 0.1);                               
+    document.getElementById('tax-counter').innerText = '$' + tax;            
+
+    const gTotal = total + tax;                                     
+    document.getElementById('g-total').innerText = '$' + gTotal;    
+}
+
+
+</script>
+    </section>
+</body>
+
+</html>
